@@ -8,6 +8,7 @@ class Graph(object):
 
     DEFAULT_VERTEXW = 0
     DEFAULT_EDGEW = 1
+    SPARSE_THRESHOLD = 2
     NUMBER_TYPES = [int, float, complex]
 
     def __init__(self, undirected=False, vertex_wghts=False, edge_wghts=False):
@@ -230,6 +231,17 @@ class Graph(object):
             assert (cur_edge_id == str)
             self.set_edge_value(cur_edge_id, weights[(i % len(weights))])
 
+    def is_sparse(self):
+        edge_count = self.num_edges
+        if (self.undirected):
+            edge_count /= 2
+        return edge_count < (self.num_vertices * Graph.SPARSE_THRESHOLD)
+
+    def create_best_representation(self):
+        if (self.is_sparse()):
+            return self.generate_adj_list()
+        return self.generate_adj_matrix()
+
     def generate_adj_matrix(self):
         adj_matrix = {}
         for vertex_key in self.vertices:
@@ -240,3 +252,9 @@ class Graph(object):
                 else:
                     adj_matrix[entry_key] = 0
         return adj_matrix
+
+    def generate_adj_list(self):
+        adj_list = {}
+        for vertex in self.vertices:
+            adj_list[vertex.get_id()] = vertex.get_nbors()
+        return adj_list
