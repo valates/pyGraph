@@ -1,5 +1,6 @@
 from edge import Edge
 
+
 class WeightedEdge(Edge):
 
     def __init__(self, source, dest, weight):

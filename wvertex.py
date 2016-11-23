@@ -1,5 +1,6 @@
 from vertex import Vertex
 
+
 class WeightedVertex(Vertex):
 
     def __init__(self, vertex_id, weight):
